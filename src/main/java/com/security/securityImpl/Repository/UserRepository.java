@@ -1,7 +1,12 @@
 package com.security.securityImpl.Repository;
 
-import org.apache.catalina.User;
+import com.security.securityImpl.Model.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface UserRepository extends JpaRepository<User,Integer> {
+@Repository
+public interface UserRepository extends JpaRepository<Users,Integer> {
+
+
+    Users findByUsername(String username);
 }
