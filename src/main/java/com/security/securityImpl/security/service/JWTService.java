@@ -1,4 +1,4 @@
-package com.security.securityImpl.Service;
+package com.security.securityImpl.security.service;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -86,10 +86,7 @@ public class JWTService {
     }
 
     private Date extractExpiration(String token) {
-        return (Date) extractClaim(token,Claims::getExpiration);
+        return (Date) extractClaim(token, Claims::getExpiration);
     }
-
-
-
 
 }

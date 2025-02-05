@@ -1,7 +1,5 @@
-package com.security.securityImpl.Security;
+package com.security.securityImpl.security.config;
 
-import com.security.securityImpl.Service.JWTService;
-import com.security.securityImpl.config.JwtFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -35,10 +33,15 @@ public class SecurityConfig {
         return httpSecurity
 
                 .csrf(customizer -> customizer.disable())
+
 //                .csrf(AbstractHttpConfigurer::disable)
 
+
+
                 .authorizeHttpRequests(request -> request
-                .requestMatchers("register", "login")
+//                .requestMatchers("/register", "/login", "/**","/api/**"  ,
+                                .requestMatchers("/api/register", "/api/login" ,"/api/regenerate-otp" ,"/api/verify-account" ,"/api/forgot-password","/api/reset-password")
+
                         .permitAll()
                         .anyRequest().authenticated())
 

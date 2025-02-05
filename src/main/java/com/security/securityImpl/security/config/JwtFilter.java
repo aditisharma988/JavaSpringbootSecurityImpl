@@ -1,12 +1,11 @@
-package com.security.securityImpl.config;
+package com.security.securityImpl.security.config;
 
-import com.security.securityImpl.Service.JWTService;
-import com.security.securityImpl.Service.MyUserDetailsService;
+import com.security.securityImpl.security.service.JWTService;
+import com.security.securityImpl.security.service.MyUserDetailsService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.apache.catalina.core.ApplicationContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -62,9 +61,6 @@ public class JwtFilter extends OncePerRequestFilter {
 //            filterChain.doFilter(request, response);
 //
 //        }
-
-
-
             UserDetails userDetails = this.myUserDetailsService.loadUserByUsername(username);
 
 
@@ -76,8 +72,6 @@ public class JwtFilter extends OncePerRequestFilter {
                 usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
             }
-
-
         }
         filterChain.doFilter(request,response);
 
