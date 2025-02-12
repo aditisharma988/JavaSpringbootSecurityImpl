@@ -40,7 +40,7 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(request -> request
 //                .requestMatchers("/register", "/login", "/**","/api/**"  ,
-                                .requestMatchers("/api/register", "/api/login" ,"/api/regenerate-otp" ,"/api/verify-account" ,"/api/forgot-password","/api/reset-password")
+                                .requestMatchers("/api/register", "/api/login" ,"/api/regenerate-otp" ,"/api/verify-account" ,"/api/forgot-password","/api/reset-password","/api/registerWithPhoneNumber","/api/loginWithPhoneNumber")
 
                         .permitAll()
                         .anyRequest().authenticated())
@@ -70,6 +70,11 @@ public class SecurityConfig {
 
     }
 
+
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
     @Bean
      public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {

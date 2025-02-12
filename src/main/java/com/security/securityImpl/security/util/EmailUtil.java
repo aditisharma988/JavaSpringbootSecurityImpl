@@ -3,7 +3,6 @@ package com.security.securityImpl.security.util;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
@@ -36,7 +35,7 @@ public class EmailUtil {
     }
 
 
-    public void sendResetPasswordEmail(String email) throws MessagingException {
+    public void sendResetPasswordEmail(String email, String tempPassword) throws MessagingException {
 
 //        SimpleMailMessage simpleMailMessage= new SimpleMailMessage();
 //        simpleMailMessage.setTo(email);
@@ -48,12 +47,16 @@ public class EmailUtil {
         mimeMessageHelper.setTo(email);
         mimeMessageHelper.setSubject("Reset password");
         mimeMessageHelper.setText("""
-                <div>
-                <a href="http://localhost:8089/reset-password?email=%s" target="_blank">click link to reset</a>
-                </div>
-                """.formatted(email), true);
+                                <div>
+                
+                                  <p>Hello,</p>
+                                             <p>Your temporary password is: <strong>%s</strong></p>
+                                             <p>Please use this password to log in and reset your password immediately.</p>
+                                             <p>If you did not request this, please contact support.</p>
+//                                <a href="http://localhost:8089/reset-password?email=%s" target="_blank">click link to reset</a>
+                                </div>
+                """.formatted(tempPassword, email), true);
 
         javaMailSender.send(mimeMessage);
     }
-
 }

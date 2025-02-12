@@ -1,27 +1,40 @@
-package com.security.securityImpl.security.model;
+package com.security.securityImpl.security.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 
 @Entity
 @RequiredArgsConstructor
-//@NoArgsConstructor
+@AllArgsConstructor
 @Data
+@Builder
 @Table(name = "users")
-public class Users {
+public class Users extends Base {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+
     private String username;
+
     private String email;
+
     private String password;
+
+    private String phoneNumber;
+
     private boolean active;
+
     private String otp;
+
     private LocalDateTime otpGeneratedTime;
+
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "users", fetch = FetchType.LAZY)
+    private List<Token> tokenList;
+
 
 }
