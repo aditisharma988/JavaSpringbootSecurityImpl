@@ -10,3 +10,4 @@ public interface AuthenticationService {
     AuthResponse generateAuthenticationResponseForPhoneNumber(final String phoneNumber, final AuthResponse authResponse);
 
 }
+

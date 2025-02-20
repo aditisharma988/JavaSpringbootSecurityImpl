@@ -20,23 +20,23 @@ public class Base {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    protected Integer id;
+    private Integer id;
 
     @CreatedDate
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_time")
-    protected Date creationTime;
+    private Date creationTime;
 
     @Column(name = "created_by")
-    protected String createdBy;
+    private String createdBy;
 
     @LastModifiedDate
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "modified_date")
-    protected Date lastModifiedDate;
+    private Date lastModifiedDate;
 
     @Column(name = "last_modified_by")
-    protected String lastModifiedBy;
+    private String lastModifiedBy;
 
 
 }

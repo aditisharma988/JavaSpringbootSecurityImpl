@@ -6,6 +6,7 @@ import com.security.securityImpl.security.request.PhoneNumberRequest;
 import com.security.securityImpl.security.request.RegisterUserRequest;
 import com.security.securityImpl.security.service.AuthenticationService;
 import com.security.securityImpl.security.service.JWTService;
+import com.security.securityImpl.security.service.LogoutService;
 import com.security.securityImpl.security.service.UserService;
 import io.jsonwebtoken.io.Decoders;
 import io.swagger.v3.oas.annotations.Operation;
@@ -14,6 +15,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +29,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.nio.charset.StandardCharsets;
+import java.sql.Timestamp;
 
 
 @RestController
@@ -46,6 +49,9 @@ public class AuthenticationController {
 
     @Autowired
     private JWTService jwtService;
+
+    @Autowired
+    private LogoutService logoutService;
 
     @Autowired
     AuthenticationManager authenticationManager;
@@ -144,6 +150,28 @@ public class AuthenticationController {
             authenticationResponse.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
             return new ResponseEntity<>(authenticationResponse, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+
+//    @PostMapping(value = "/logout", produces = {"application/json", "application/xml"})
+//    {
+
+
+        @RequestMapping(value = "/logout", method = RequestMethod.POST, produces = {"application/json", "application/xml"})
+        public AuthResponse sessionLogout(
+        final HttpServletRequest request
+    ){
+        final AuthResponse response = AuthResponse.builder().build();
+//        response.set(new Timestamp(System.currentTimeMillis()));
+        try {
+            logoutService.logout(request);
+            response.setMessage("User logout successfully");
+            response.setStatus(HttpStatus.OK.value());
+        } catch (Exception e) {
+            response.setMessage(e.getLocalizedMessage());
+            response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+        }
+        return response;
     }
 
 

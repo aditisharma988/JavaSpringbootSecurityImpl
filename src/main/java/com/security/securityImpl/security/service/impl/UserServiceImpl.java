@@ -94,7 +94,9 @@ public class UserServiceImpl implements UserService {
                 throw new RuntimeException("Unable to send OTP, please try again.");
             }
 
-            Users user = Users.builder().username(registerUserRequest.getUsername()).email(registerUserRequest.getEmail()).phoneNumber(registerUserRequest.getPhoneNumber()).password(passwordEncoder.encode(password)).otp(otp).otpGeneratedTime(LocalDateTime.now()).build();
+
+
+            Users user = Users.builder().username(registerUserRequest.getUsername()).email(registerUserRequest.getEmail()).phoneNumber(registerUserRequest.getPhoneNumber()).password(passwordEncoder.encode(registerUserRequest.getPassword())).otp(otp).otpGeneratedTime(LocalDateTime.now()).build();
 
             Users savedUser = userRepository.save(user);
 

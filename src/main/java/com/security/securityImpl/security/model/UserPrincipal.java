@@ -17,6 +17,11 @@ public class UserPrincipal implements UserDetails
         this.user=user;
     }
 
+
+    public Users getUser() {
+        return user;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
 //        return List.of();

@@ -13,7 +13,6 @@ public interface UsersMapper {
 
 
     @Mapping(target = "password", ignore = true)
-//    @Mapping(target = "role", ignore = true)
     @Mapping(target = "tokenList", ignore = true)
     UsersResponseDto mapToUserResponseDto(@MappingTarget UsersResponseDto usersResponseDto, Users users);
 

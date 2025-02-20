@@ -6,6 +6,7 @@ import com.security.securityImpl.security.mapper.UsersMapper;
 import com.security.securityImpl.security.repository.UserRepository;
 import com.security.securityImpl.security.service.AuthenticationService;
 import com.security.securityImpl.security.service.JWTService;
+import com.security.securityImpl.security.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -16,16 +17,20 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final UserRepository userRepository;
     private final UsersMapper usersMapper;
     private final JWTService jwtService;
+    private final TokenService tokenService;
 
 //    @Autowired
 //    private TokenService tokenService;
 
     @Autowired
-    public AuthenticationServiceImpl(UserRepository userRepository, UsersMapper usersMapper, JWTService jwtService) {
+    public AuthenticationServiceImpl(UserRepository userRepository, UsersMapper usersMapper, JWTService jwtService, TokenService tokenService) {
         this.userRepository = userRepository;
         this.usersMapper = usersMapper;
         this.jwtService = jwtService;
+        this.tokenService= tokenService;
     }
+
+
 
     @Override
     public AuthResponse generateAuthenticationResponse(String username, AuthResponse authResponse) {
@@ -35,14 +40,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new RuntimeException("User not found!");
         }
 
-//        final UserDto userDto = findByUsername(username);
-//        final String accessToken = jwtUtil.generateToken(userDto, AppConstants.TokenType.ACCESS_TOKEN);
-//        final String refreshToken = jwtUtil.generateToken(userDto, AppConstants.TokenType.REFRESH_TOKEN);
+        String accessToken = jwtService.generateToken(usersResponseDto.getId());
+        String refreshToken = jwtService.generateToken(usersResponseDto.getId());
 
-        String accessToken = jwtService.generateToken(String.valueOf(usersResponseDto));
-        String refreshToken = jwtService.generateToken(String.valueOf(usersResponseDto));
 
-//        tokenService.saveToken(usersResponseDto, accessToken, refreshToken);
+        tokenService.saveToken(usersResponseDto, accessToken, refreshToken);
         authResponse.setUsers(usersResponseDto);
         authResponse.setAccessToken(accessToken);
         authResponse.setRefreshToken(refreshToken);
@@ -70,13 +72,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (usersResponseDto == null) {
             throw new RuntimeException("User not found!");
         }
+        String accessToken = jwtService.generateToken(usersResponseDto.getId());
+        String refreshToken = jwtService.generateToken(usersResponseDto.getId());
 
-        String accessToken = jwtService.generateToken(String.valueOf(usersResponseDto));
-        String refreshToken = jwtService.generateToken(String.valueOf(usersResponseDto));
 
-//        tokenService.saveToken(usersResponseDto, accessToken, refreshToken);
+        tokenService.saveToken(usersResponseDto, accessToken, refreshToken);
         authResponse.setUsers(usersResponseDto);
-//        authResponse.setUsers(usersResponseDto1);
         authResponse.setAccessToken(accessToken);
         authResponse.setRefreshToken(refreshToken);
         authResponse.setStatus(HttpStatus.OK.value());
