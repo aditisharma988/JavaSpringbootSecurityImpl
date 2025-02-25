@@ -2,6 +2,7 @@ package com.security.securityImpl.security.config;
 
 import com.security.securityImpl.security.service.JWTService;
 import com.security.securityImpl.security.service.MyUserDetailsService;
+import com.security.securityImpl.service.ImageService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -28,12 +29,15 @@ import java.io.IOException;
         @Autowired
         MyUserDetailsService myUserDetailsService;
 
+//        @Autowired
+//        ImageService imageService;
+
         @Override
         protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
 
             final String authHeader = request.getHeader("Authorization");
             final String jwt;
-            final Integer userId; // ✅ Use Integer for userId
+            final Integer userId;
 
             if (authHeader == null || !authHeader.startsWith("Bearer ")) {
                 filterChain.doFilter(request, response);
@@ -41,10 +45,10 @@ import java.io.IOException;
             }
 
             jwt = authHeader.substring(7);
-            userId = jwtService.extractUserId(jwt); // ✅ Extract userId from token
+            userId = jwtService.extractUserId(jwt);
 
             if (userId != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                UserDetails userDetails = this.myUserDetailsService.loadUserByUserId(userId); // ✅ Load by ID
+                UserDetails userDetails = this.myUserDetailsService.loadUserByUserId(userId);
                 if (jwtService.validateToken(jwt, userDetails)) {
                     UsernamePasswordAuthenticationToken authenticationToken =
                             new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
