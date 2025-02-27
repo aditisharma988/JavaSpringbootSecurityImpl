@@ -26,13 +26,14 @@ public class FileController {
 
     @GetMapping("downloadToFiles/{fileName}")
     public ResponseEntity<byte[]> downloadImageToFileSystem(@PathVariable String fileName) throws IOException {
-        byte[] imageData = fileService.downloadImageFromFileSystem(fileName);
+        byte[] imageData = fileService.downloadFilesFromSystem(fileName).getBody();
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.IMAGE_PNG);
-        headers.setContentLength(imageData.length);
+//        HttpHeaders headers = new HttpHeaders();
+////        headers.setContentType(MediaType.IMAGE_PNG);
+//        headers.setContentType(MediaType.valueOf("video/mp4"));
+//        headers.setContentLength(imageData.length);
 
-        return new ResponseEntity<>(imageData, headers, HttpStatus.OK);
+        return new ResponseEntity<>(imageData,HttpStatus.OK);
     }
 
 }
