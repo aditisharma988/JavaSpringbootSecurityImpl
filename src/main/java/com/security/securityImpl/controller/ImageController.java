@@ -16,12 +16,11 @@ import java.io.IOException;
 public class ImageController {
 
     @Autowired
-    private  ImageService imageService;
+    private ImageService imageService;
 
     @PostMapping("/save")
-    public String saveOrUploadImage(@RequestParam("file")MultipartFile multipartFile, @RequestParam("name") String name, @RequestParam("description") String description) throws IOException {
-      return  imageService.saveImageToDb(multipartFile, name, description);
+    public String saveOrUploadImage(@RequestParam("file") MultipartFile multipartFile, @RequestParam("name") String name, @RequestParam("description") String description) throws IOException {
+        return imageService.saveImageToDb(multipartFile, name, description);
     }
-
 
 }

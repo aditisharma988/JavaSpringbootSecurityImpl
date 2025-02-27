@@ -12,5 +12,4 @@ public interface ImageService {
 
    String  saveImageToDb(MultipartFile multipartFile, String name, String description) throws IOException;
 
-
 }
