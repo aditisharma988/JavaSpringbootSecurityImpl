@@ -15,7 +15,10 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class FileServiceImpl implements FileService {
@@ -40,6 +43,32 @@ public class FileServiceImpl implements FileService {
 
         return "File uploaded successfully: " + filePath;
     }
+
+    public ResponseEntity<List<FileData>> getAllFiles() {
+       List<FileData> fileDataList = fileRepository.findAll();
+
+        if (fileDataList.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.emptyList());
+        }
+
+        return ResponseEntity.ok(fileDataList);
+    }
+
+//        if (fileData.isEmpty()) {
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+//        }
+
+//        try {
+//            return Files.walk(this.fileStorageLocation, 1)
+//                    .filter(path -> !path.equals(this.fileStorageLocation))
+//                    .map(this.fileStorageLocation::relativize)
+//                    .map(Path::toString)
+//                    .collect(Collectors.toList());
+//        } catch (IOException ex) {
+//            throw new RuntimeException("Could not list the files!", ex);
+//        }
+
+
 
     public ResponseEntity<byte[]> downloadFilesFromSystem(String fileName) throws IOException {
         Optional<FileData> fileData = fileRepository.findByName(fileName.trim());

@@ -1,5 +1,6 @@
 package com.security.securityImpl.controller;
 
+import com.security.securityImpl.entity.FileData;
 import com.security.securityImpl.service.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 
 @RestController
@@ -23,6 +25,12 @@ public class FileController {
     public String saveOrUploadImageToFileSystem(@RequestParam("file") MultipartFile multipartFile, @RequestParam("name") String name, @RequestParam("description") String description, @RequestParam("type") String type) throws IOException {
         return fileService.saveImageToFileSystem(multipartFile, name, description, type);
     }
+
+    @GetMapping("/getAllFiles")
+public ResponseEntity<List<FileData>> getAllFiles(){
+    return fileService.getAllFiles();
+    }
+
 
     @GetMapping("downloadToFiles/{fileName}")
     public ResponseEntity<byte[]> downloadImageToFileSystem(@PathVariable String fileName) throws IOException {
