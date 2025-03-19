@@ -26,5 +26,4 @@ public class FileData {
 
     private String filePath;
 
-
 }

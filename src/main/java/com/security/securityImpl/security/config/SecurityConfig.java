@@ -40,7 +40,7 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(request -> request
 //                .requestMatchers("/register", "/login", "/**","/api/**"  ,
-                                .requestMatchers("/api/register", "/api/login" ,"/api/regenerate-otp" ,"/api/verify-account" ,"/api/forgot-password","/api/reset-password","/api/registerWithPhoneNumber","/api/loginWithPhoneNumber","/api/logout" ,"/imageOrFile/save" ,"/imageOrFile/saveToFileSystem" ,"/imageOrFile/downloadToFiles/{fileName}","/imageOrFile/getAllFiles")
+                                .requestMatchers("/api/register", "/api/login" ,"/api/regenerate-otp" ,"/api/verify-account" ,"/api/forgot-password","/api/reset-password","/api/registerWithPhoneNumber","/api/loginWithPhoneNumber","/api/logout" ,"/imageOrFile/save" ,"/imageOrFile/saveToFileSystem" ,"/imageOrFile/downloadToFiles/{fileName}","/imageOrFile/getAllFiles" ,"/startBatch")
 
                         .permitAll()
                         .anyRequest().authenticated())
@@ -69,7 +69,6 @@ public class SecurityConfig {
         return daoAuthenticationProvider;
 
     }
-
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {

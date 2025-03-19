@@ -18,13 +18,13 @@ import java.nio.file.Files;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class FileServiceImpl implements FileService {
 
     @Autowired
     private FileRepository fileRepository;
+
     private final String FOLDER_PATH = "C:\\Users\\aditi\\Desktop\\JavaFileSave\\";
 
 
@@ -54,21 +54,6 @@ public class FileServiceImpl implements FileService {
         return ResponseEntity.ok(fileDataList);
     }
 
-//        if (fileData.isEmpty()) {
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-//        }
-
-//        try {
-//            return Files.walk(this.fileStorageLocation, 1)
-//                    .filter(path -> !path.equals(this.fileStorageLocation))
-//                    .map(this.fileStorageLocation::relativize)
-//                    .map(Path::toString)
-//                    .collect(Collectors.toList());
-//        } catch (IOException ex) {
-//            throw new RuntimeException("Could not list the files!", ex);
-//        }
-
-
 
     public ResponseEntity<byte[]> downloadFilesFromSystem(String fileName) throws IOException {
         Optional<FileData> fileData = fileRepository.findByName(fileName.trim());
@@ -88,17 +73,17 @@ public class FileServiceImpl implements FileService {
 
         String contentType = Files.probeContentType(file.toPath());
 
-        if (contentType == null) {
-            if (fileName.endsWith(".mp4")) {
-                contentType = "video/mp4";
-            } else if (fileName.endsWith(".png")) {
-                contentType = "image/png";
-            } else if (fileName.endsWith(".jpg") || fileName.endsWith(".jpeg")) {
-                contentType = "image/jpeg";
-            } else {
-                return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE).body(null);
-            }
-        }
+//        if (contentType == null) {
+//            if (fileName.endsWith(".mp4")) {
+//                contentType = "video/mp4";
+//            } else if (fileName.endsWith(".png")) {
+//                contentType = "image/png";
+//            } else if (fileName.endsWith(".jpg") || fileName.endsWith(".jpeg")) {
+//                contentType = "image/jpeg";
+//            } else {
+//                return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE).body(null);
+//            }
+//        }
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.parseMediaType(contentType));
