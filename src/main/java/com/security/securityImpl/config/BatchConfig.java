@@ -10,6 +10,7 @@ import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.item.data.RepositoryItemWriter;
 import org.springframework.batch.item.file.FlatFileItemReader;
+import org.springframework.batch.item.file.FlatFileItemWriter;
 import org.springframework.batch.item.file.LineMapper;
 import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
 import org.springframework.batch.item.file.mapping.DefaultLineMapper;
@@ -71,7 +72,18 @@ public class BatchConfig {
 
     }
 
-    //step 4 - implement step so that to assign to job later on
+    // Step 4: Write Data to New CSV File
+    @Bean
+    public FlatFileItemWriter<IndustryData> csvWriter() {
+        FlatFileItemWriter<IndustryData> writer = new FlatFileItemWriter<>();
+        writer.setResource(new FileSystemResource("src/main/resources/exported-industry-data.csv"));
+        writer.setAppendAllowed(true);
+        writer.setLineAggregator(item -> String.format("%s,%s,%s,%s,%s,%s,%s", item.getYear(), item.getIndustryCodeANZSIC(), item.getIndustryNameANZSIC(), item.getRmeSizeGrp(), item.getVariable(), item.getValue(), item.getUnit()));
+
+        return writer;
+    }
+
+    //    step 4 - implement step so that to assign to job later on
     @Bean
     public Step step(JobRepository jobRepository, PlatformTransactionManager platformTransactionManager) {
         return new StepBuilder("csv-step", jobRepository).<IndustryData, IndustryData>chunk(10, platformTransactionManager).reader(itemReader()).processor(processor()).writer(itemWriter()).build();
@@ -83,6 +95,5 @@ public class BatchConfig {
     public Job job(JobRepository jobRepository, PlatformTransactionManager platformTransactionManager) {
         return new JobBuilder("csv-job", jobRepository).flow(step(jobRepository, platformTransactionManager)).end().build();
     }
-
-
 }
+
